@@ -72,7 +72,7 @@
   .hero{ padding:72px 0 88px; border-top:none; }
   .hero-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center; }
   @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } }
-  .hero h1{ font-size:clamp(2.3rem,5vw,3.5rem); margin:14px 0 18px; }
+  .hero h1{ font-size:clamp(1.9rem,3.6vw,2.7rem); line-height:1.15; margin:14px 0 18px; }
   .hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin:28px 0; }
   .facade{ position:relative; background:var(--surface); border:1px solid var(--rule); padding:16px; }
   .facade svg{ width:100%; height:auto; }
@@ -184,7 +184,7 @@
   .capital-options{ display:grid; gap:10px; margin-bottom:24px; }
   .capital-options button{ text-align:left; padding:13px 16px; border:1px solid var(--rule); background:none; font-family:var(--font-body); font-size:.95rem; cursor:pointer; color:var(--ink); }
   .capital-options button.selected{ border-color:var(--accent-2); background:var(--surface-2); }
-  .modal-inner input[type=email]{ width:100%; padding:13px 14px; border:1px solid var(--rule); background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:.95rem; margin-bottom:18px; }
+  .modal-inner input[type=email], .modal-inner input[type=text]{ width:100%; padding:13px 14px; border:1px solid var(--rule); background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:.95rem; margin-bottom:18px; }
   .modal-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .back-link{ background:none; border:none; font-size:.85rem; color:var(--muted); cursor:pointer; text-decoration:underline; padding:0; }
   .privacy-note{ font-size:.76rem; color:var(--muted); margin-top:16px; text-align:center; }
@@ -242,7 +242,7 @@
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow">HMO Conversion Investment · United Kingdom</p>
-        <h1>From Empty House to <em>Cash Flow.</em></h1>
+        <h1>Turn an under-let house into a <em>licensed income asset.</em></h1>
         <p class="lede">Silver Key guides investors through a complete, done-with-you process: sourcing conversion-ready houses, structuring finance, delivering the HMO fit-out, and managing the asset for long-term performance.</p>
         <div class="hero-actions">
           <button class="btn btn-primary" onclick="openLead()">Download the Free HMO Blueprint</button>
@@ -575,21 +575,13 @@
 
     <div class="modal-step" data-step="2">
       <h3>Where should we send your free blueprint?</h3>
+      <input type="text" id="leadName" placeholder="Your name" autocomplete="name" style="margin-bottom:14px">
       <input type="email" id="leadEmail" placeholder="you@email.com" autocomplete="email">
       <div class="modal-row">
         <button class="back-link" onclick="goStep(1)">← Go back</button>
         <button class="btn btn-primary btn-sm" onclick="submitLead()">SEND MY FREE BLUEPRINT</button>
       </div>
       <p class="privacy-note">🔒 Your details are 100% private. No spam, ever.</p>
-    </div>
-
-    <div class="modal-step" data-step="3">
-      <div class="thankyou">
-        <span class="crest crest--lg" style="margin:0 auto 18px"><svg class="key-icon" viewBox="0 0 200 200" aria-hidden="true"><use href="#silver-key-mark"></use></svg></span>
-        <h3>Blueprint on its way</h3>
-        <p class="muted">Check your inbox: we've sent the Silver Key HMO Blueprint, along with a link to book your strategy session.</p>
-        <button class="btn btn-ghost btn-sm" style="margin-top:16px" onclick="document.getElementById('leadModal').close()">Close</button>
-      </div>
     </div>
   </div>
 </dialog>
@@ -620,12 +612,17 @@
   });
 
   function submitLead(){
+    var name = document.getElementById('leadName').value.trim();
     var email = document.getElementById('leadEmail').value.trim();
+    if (!name) {
+      document.getElementById('leadName').focus();
+      return;
+    }
     if (!email || email.indexOf('@') === -1) {
       document.getElementById('leadEmail').focus();
       return;
     }
-    goStep(3);
+    window.location.href = 'silver-key-booking.html?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
   }
 </script>
 
